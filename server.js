@@ -26,7 +26,6 @@ const tmdbRoutes = require("./routes/tmdbRoutes");
 app.use("/api/movies", tmdbRoutes);
 
 const watchlistRoutes = require("./routes/watchlistRoutes");
-
 app.use("/api/watchlist", watchlistRoutes);
 
 

@@ -1,7 +1,4 @@
-const { Pool } = require("pg");
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
+const watchlistModel = require("../models/watchlistModels");
 
 async function addToWatchlist(req, res) {
   const { user_id, movie_id, title, genre, poster_url, release_date } = req.body;
@@ -11,17 +8,16 @@ async function addToWatchlist(req, res) {
   }
 
   try {
-    const query = `
-      INSERT INTO watchlist 
-      (user_id, movie_id, title, genre, poster_url, release_date)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING *;
-    `;
+    const addedItem = await watchlistModel.addToWatchlist(
+      user_id,
+      movie_id,
+      title,
+      genre,
+      poster_url,
+      release_date
+    );
 
-    const values = [user_id, movie_id, title, genre, poster_url, release_date];
-    const result = await pool.query(query, values);
-
-    res.json(result.rows[0]);
+    res.json(addedItem);
 
   } catch (err) {
     console.error("Error adding to watchlist:", err);
@@ -29,4 +25,25 @@ async function addToWatchlist(req, res) {
   }
 }
 
-module.exports = { addToWatchlist };
+
+async function getWatchlist(req, res) {
+  const user_id = req.query.user_id; // or req.params.user_id
+
+  if (!user_id) {
+    return res.status(400).json({ error: "Missing user_id" });
+  }
+
+  try {
+    const rows = await watchlistModel.getWatchlist(user_id);
+    res.json(rows);
+
+  } catch (err) {
+    console.error("Error fetching watchlist:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
+
+
+
+module.exports = { addToWatchlist,
+  getWatchlist};

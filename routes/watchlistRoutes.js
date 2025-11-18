@@ -1,8 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { addToWatchlist } = require("../controllers/watchlistController");
+const watchlistController = require("../controllers/watchlistController");
 
-// POST /api/watchlist/add
-router.post("/add", addToWatchlist);
 
+// Example: POST /api/watchlist/add
+router.post("/add", watchlistController.addToWatchlist);
+
+// Example: GET /api/watchlist/user?user_id=1
+//http://localhost:3000/api/watchlist/user?user_id=1
+router.get("/user", watchlistController.getWatchlist);
 module.exports = router;
