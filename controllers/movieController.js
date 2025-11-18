@@ -11,8 +11,6 @@ async function fetchAllgernes(req, res) {
     }
 };
 
-
-
 module.exports = {
     fetchAllgernes
 };
