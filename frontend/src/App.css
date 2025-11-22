@@ -61,14 +61,6 @@
 }
 
 /* ===== MOVIE CARD ===== */
-/* .movie-card {
-  background: black;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-  text-align: center;
-  transition: transform 0.2s ease;
-} */
 
 .movie-card {
   background: black;
@@ -114,3 +106,82 @@
   margin-top: 20px;
   color: white;
 }
+
+
+/* Navbar css  */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 25px;
+  align-items: center;
+  background-color: #111;
+  color: white;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.nav-links a:hover {
+  color: #00baff;
+}
+.logo img {
+  size-adjust: contain;
+  height: 70px;
+}
+
+
+/* Watchlist Page CSS */
+
+.watchlist-page {
+  padding: 20px 40px;
+}
+
+.watchlist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.watchlist-item {
+  display: flex;
+  align-items: center;
+  background: #1a1a1a;
+  padding: 15px;
+  border-radius: 10px;
+  gap: 20px;
+  color: white;
+}
+
+.watchlist-img {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.watchlist-info h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.watchlist-info p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #cccccc;
+}
+
