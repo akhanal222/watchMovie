@@ -43,7 +43,29 @@ async function getWatchlist(req, res) {
   }
 }
 
+async function deleteFromWatchlist(req, res) {
+  const { id, user_id } = req.body;
 
+  if (!id || !user_id) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
 
-module.exports = { addToWatchlist,
-  getWatchlist};
+  try {
+    const deletedItem = await watchlistModel.deleteFromWatchlist(
+      id,
+      user_id
+    );
+
+    res.json(deletedItem);
+
+  } catch (err) {
+    console.error("Error deleting from watchlist:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
+
+module.exports = {
+  addToWatchlist,
+  getWatchlist,
+  deleteFromWatchlist
+};

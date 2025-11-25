@@ -28,6 +28,8 @@ app.use("/api/movies", tmdbRoutes);
 const watchlistRoutes = require("./routes/watchlistRoutes");
 app.use("/api/watchlist", watchlistRoutes);
 
+app.use("/api/delete", watchlistRoutes);
+
 
 // Serve frontend files (optional for now)
 app.use(express.static("frontend"));

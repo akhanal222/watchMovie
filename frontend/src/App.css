@@ -168,8 +168,8 @@
 }
 
 .watchlist-img {
-  width: 100px;
-  height: 150px;
+  width: 200px;
+  height: 250px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -184,4 +184,22 @@
   font-size: 14px;
   color: #cccccc;
 }
+.remove-btn {
+  align-items: right ;
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ff4d4d;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
 
+.watchlist-title {
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+}

@@ -25,5 +25,21 @@ async function getWatchlist(user_id) {
   return result.rows;
 }
 
-module.exports = { getWatchlist, 
-  addToWatchlist };
+async function deleteFromWatchlist(id, user_id) {
+  const query = `
+    DELETE FROM watchlist 
+    WHERE id = $1 AND user_id = $2
+    RETURNING *;
+  `;
+
+  const values = [id, user_id];
+  const result = await pool.query(query, values);
+
+  return result.rows[0];
+}
+
+module.exports = {
+  getWatchlist,
+  addToWatchlist,
+  deleteFromWatchlist
+};
