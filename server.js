@@ -2,7 +2,7 @@
 
 require("dotenv").config();
 const express = require("express");
-const multer = require("multer");
+// const multer = require("multer");
 const cors = require("cors");
 
 const app = express();
@@ -15,7 +15,7 @@ app.use(cors({
 }));
 
 // Middleware
-app.use(multer().none());
+// app.use(multer().none());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -29,6 +29,12 @@ const watchlistRoutes = require("./routes/watchlistRoutes");
 app.use("/api/watchlist", watchlistRoutes);
 
 app.use("/api/delete", watchlistRoutes);
+
+// This is the auth routes
+const authRoutes = require("./routes/authRoutes");
+
+app.use("/auth", authRoutes);
+
 
 
 // Serve frontend files (optional for now)
