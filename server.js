@@ -28,7 +28,7 @@ app.use("/api/movies", tmdbRoutes);
 const watchlistRoutes = require("./routes/watchlistRoutes");
 app.use("/api/watchlist", watchlistRoutes);
 
-app.use("/api/delete", watchlistRoutes);
+// app.use("/api/delete", watchlistRoutes);
 
 // This is the auth routes
 const authRoutes = require("./routes/authRoutes");

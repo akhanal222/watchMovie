@@ -1,7 +1,8 @@
 const watchlistModel = require("../models/watchlistModels");
 
 async function addToWatchlist(req, res) {
-  const { user_id, movie_id, title, genre, poster_url, release_date } = req.body;
+  const user_id = req.user.id; 
+  const { movie_id, title, genre, poster_url, release_date } = req.body;
 
   if (!user_id || !movie_id) {
     return res.status(400).json({ error: "Missing required fields" });
@@ -27,7 +28,7 @@ async function addToWatchlist(req, res) {
 
 
 async function getWatchlist(req, res) {
-  const user_id = req.query.user_id; // or req.params.user_id
+  const user_id = req.user.id; // or req.params.user_id
 
   if (!user_id) {
     return res.status(400).json({ error: "Missing user_id" });
@@ -44,7 +45,8 @@ async function getWatchlist(req, res) {
 }
 
 async function deleteFromWatchlist(req, res) {
-  const { id, user_id } = req.body;
+  const { id } = req.body;
+  const user_id = req.user.id;
 
   if (!id || !user_id) {
     return res.status(400).json({ error: "Missing required fields" });

@@ -52,4 +52,30 @@ async function searchMovies(req, res) {
   }
 }
 
-module.exports = { searchMovies };
+async function getMovieDetails(req, res) {
+  const { id } = req.params;
+
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}`
+    );
+
+    const movie = await response.json();
+
+    res.json({
+      id: movie.id,
+      title: movie.title,
+      overview: movie.overview,
+      release_date: movie.release_date,
+      genres: movie.genres.map(g => g.name),
+      poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+      vote_average: movie.vote_average,
+    });
+
+  } catch (err) {
+    console.error("TMDB details error:", err);
+    res.status(500).json({ error: "Failed to fetch movie details" });
+  }
+}
+
+module.exports = { searchMovies, getMovieDetails };

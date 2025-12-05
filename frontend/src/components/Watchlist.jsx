@@ -5,7 +5,15 @@ function Watchlist() {
 
   useEffect(() => {
     async function fetchWatchlist() {
-      const res = await fetch("http://localhost:3000/api/watchlist/user?user_id=1");
+      // const res = await fetch("http://localhost:3000/api/watchlist/user?user_id=1");
+      const token = localStorage.getItem("token");
+
+      const res = await fetch("http://localhost:3000/api/watchlist/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const data = await res.json();
       setWatchlist(data);
     }
@@ -14,14 +22,14 @@ function Watchlist() {
 
   async function handleRemove(id) {
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:3000/api/watchlist/delete", {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: id,
-          user_id: 1,       // Temporary
-          // remove all the instances of the movie from the watchlist
-        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id }),
       });
       if (res.ok) {
         setWatchlist((prev) => prev.filter((movie) => movie.id !== id));
@@ -38,7 +46,6 @@ function Watchlist() {
       <div className="watchlist-list">
         {watchlist.map((movie) => (
           <div key={movie.id} className="watchlist-item">
-            
             <img
               src={movie.poster_url}
               alt={movie.title}
@@ -51,12 +58,16 @@ function Watchlist() {
               <p>Genre: {movie.genre || "N/A"}</p>
               <p>Added On: {movie.added_at?.slice(0, 10) || "Unknown"}</p>
               {/* Remove button */}
-              <button className="remove-btn" onClick={() => handleRemove(movie.id)}>Remove</button>
+              <button
+                className="remove-btn"
+                onClick={() => handleRemove(movie.id)}
+              >
+                Remove
+              </button>
 
               {/* // Placeholder for watched status */}
-              <p>Watched: {movie.watched ? "Yes" : "No"}</p> 
+              <p>Watched: {movie.watched ? "Yes" : "No"}</p>
             </div>
-
           </div>
         ))}
       </div>

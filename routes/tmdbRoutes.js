@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const tmdbController = require("../controllers/tmdbController");
 
-const { searchMovies } = require("../controllers/tmdbController");
-
-router.get("/search", searchMovies);
+router.get("/search", tmdbController.searchMovies);
+router.get("/:id", tmdbController.getMovieDetails);
 
 module.exports = router;
