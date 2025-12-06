@@ -12,7 +12,8 @@ const app = express();
 app.use(cors({
   origin:[
    "http://localhost:5173",
-   "https://watchly-7fxq.onrender.com"
+   "https://watchly-7fxq.onrender.com",
+   "https://watchmovie-s628.onrender.com"
 ],
   methods: "GET,POST,PUT,DELETE",
   credentials: true
