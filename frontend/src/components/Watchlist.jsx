@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Watchlist() {
   const [watchlist, setWatchlist] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchWatchlist() {
@@ -58,6 +60,9 @@ function Watchlist() {
       );
     }
   }
+  function goToMovieDetail(movie) {
+    navigate(`/movie/${movie.movie_id || movie.id}`);
+  }
 
   return (
     <div className="watchlist-page">
@@ -70,10 +75,16 @@ function Watchlist() {
               src={movie.poster_url}
               alt={movie.title}
               className="watchlist-img"
+              onClick={() => goToMovieDetail(movie)}
             />
 
             <div className="watchlist-info">
-              <h3>{movie.title}</h3>
+              <h3
+                className="watchlist-title-clickable"
+                onClick={() => goToMovieDetail(movie)}
+              >
+                {movie.title}
+              </h3>
               <p>Release Date: {movie.release_date || "N/A"}</p>
               <p>Genre: {movie.genre || "Unknown"}</p>
               <p>Added On: {movie.added_at?.slice(0, 10) || "Unknown"}</p>

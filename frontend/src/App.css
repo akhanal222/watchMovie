@@ -388,3 +388,14 @@
   border: none;
 }
 
+
+
+.watchlist-title-clickable {
+  cursor: pointer;
+}
+.watchlist-title-clickable:hover {
+  opacity: 0.8;
+  transition: 0.2s ease-in-out;
+  color: #00baff;
+}
+

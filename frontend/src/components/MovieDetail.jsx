@@ -2,10 +2,12 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddToWatchlistButton from "./AddToWatchlistButton";
 
+
 function MovieDetail() {
   const { id } = useParams(); // get movie ID from URL
   const [movie, setMovie] = useState(null);
   const [trailer, setTrailer] = useState(null);
+
 
   useEffect(() => {
     async function fetchMovie() {
@@ -40,6 +42,7 @@ function MovieDetail() {
   async function backToHome() {
     window.location.href = "/";
   }
+  
 
   return (
     <div className="movie-detail-page">
