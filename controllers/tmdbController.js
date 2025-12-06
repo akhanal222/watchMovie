@@ -15,25 +15,6 @@ async function searchMovies(req, res) {
     const response = await fetch(url); // built-in fetch
     const data = await response.json();
 
-    // const GENRE_MAP = {
-    //   28: "Action",
-    //   12: "Adventure",
-    //   16: "Animation",
-    //   35: "Comedy",
-    //   80: "Crime",
-    //   99: "Documentary",
-    //   18: "Drama",
-    //   10751: "Family",
-    //   14: "Fantasy",
-    //   27: "Horror",
-    //   9648: "Mystery",
-    //   10749: "Romance",
-    //   878: "Science Fiction",
-    //   53: "Thriller",
-    //   10752: "War",
-    //   37: "Western"
-    // };
-
     const results = data.results.map(movie => ({
       id: movie.id,
       title: movie.title,
@@ -90,25 +71,6 @@ async function getTrendingToday(req, res) {
     );
 
     const data = await response.json();
-
-    // const GENRE_MAP = {
-    //   28: "Action",
-    //   12: "Adventure",
-    //   16: "Animation",
-    //   35: "Comedy",
-    //   80: "Crime",
-    //   99: "Documentary",
-    //   18: "Drama",
-    //   10751: "Family",
-    //   14: "Fantasy",
-    //   27: "Horror",
-    //   9648: "Mystery",
-    //   10749: "Romance",
-    //   878: "Science Fiction",
-    //   53: "Thriller",
-    //   10752: "War",
-    //   37: "Western"
-    // };
     const results = data.results.map(movie => ({
       id: movie.id,
       title: movie.title,
@@ -118,7 +80,6 @@ async function getTrendingToday(req, res) {
         : null,
       vote_average: movie.vote_average,
       genre_id: movie.genre_ids?.[0] || null,
-      // genre: GENRE_MAP[movie.genre_ids?.[0]] || "Unknown" 
     }));
 
     res.json(results);
@@ -128,5 +89,41 @@ async function getTrendingToday(req, res) {
     res.status(500).json({ error: "Failed to fetch trending movies" });
   }
 }
+async function getMovieVideos(req, res) {
+  const { id } = req.params;
 
-module.exports = { searchMovies, getMovieDetails, getTrendingToday };
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}`
+    );
+
+    const data = await response.json();
+
+    if (!data.results) {
+      return res.json([]);
+    }
+
+    // Filter YouTube trailers only
+    const trailers = data.results
+      .filter(video =>
+        video.site === "YouTube" &&
+        (video.type === "Trailer" || video.type === "Teaser")
+      )
+      .map(video => ({
+        id: video.id,
+        key: video.key,          // YouTube video ID
+        name: video.name,
+        type: video.type,
+      }));
+
+    res.json(trailers);
+
+  } catch (err) {
+    console.error("TMDB video error:", err);
+    res.status(500).json({ error: "Failed to fetch movie videos" });
+  }
+}
+
+
+
+module.exports = { searchMovies, getMovieDetails, getTrendingToday, getMovieVideos };
