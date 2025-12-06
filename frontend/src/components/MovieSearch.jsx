@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import MovieCard from "./MovieCard";
+import { API_BASE_URL } from "../config";
 
 function MovieSearch() {
   const [query, setQuery] = useState("");
@@ -11,7 +12,7 @@ function MovieSearch() {
     async function loadTrending() {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/movies/trending/today"
+          `${API_BASE_URL}/api/movies/trending/today`
         );
         const data = await res.json();
         setTrendingToday(data);
@@ -30,7 +31,7 @@ function MovieSearch() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/movies/search?query=${query}`
+        `${API_BASE_URL}/api/movies/search?query=${query}`
       );
       const data = await res.json();
       setResults(data);

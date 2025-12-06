@@ -1,13 +1,15 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddToWatchlistButton from "./AddToWatchlistButton";
+import { API_BASE_URL } from "../config";
+
 function MovieDetail() {
   const { id } = useParams(); // get movie ID from URL
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
     async function fetchMovie() {
-      const res = await fetch(`http://localhost:3000/api/movies/${id}`);
+      const res = await fetch(`${API_BASE_URL}/api/movies/${id}`);
       const data = await res.json();
       setMovie(data);
     }

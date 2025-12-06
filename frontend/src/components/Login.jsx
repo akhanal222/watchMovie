@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_BASE_URL } from "../config";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,7 +10,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })

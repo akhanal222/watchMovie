@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { API_BASE_URL } from "../config";
 
 function AddToWatchlistButton({ movie }) {
   const [disable, setdisable] = useState(false); // this handel the button press
@@ -10,7 +11,7 @@ function AddToWatchlistButton({ movie }) {
     setdisable(true); // disable the button after press
     setLabel("Adding...");
     try {
-      const res = await fetch("http://localhost:3000/api/watchlist/add", {
+      const res = await fetch(`${API_BASE_URL}/api/watchlist/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
