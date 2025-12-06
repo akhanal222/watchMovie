@@ -19,9 +19,11 @@ function Navbar() {
 
       <ul className="nav-links">
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/watchlist">Watchlist</Link></li>
         {token ? (
-          <li><button onClick={logout}>Logout</button></li>
+          <>
+            <li><Link to="/watchlist">Watchlist</Link></li>
+            <li><button onClick={logout}>Logout</button></li>
+          </>
         ) : (
           <>
             <li><Link to="/login">Login</Link></li>
