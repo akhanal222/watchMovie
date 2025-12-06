@@ -1,8 +1,8 @@
 const watchlistModel = require("../models/watchlistModels");
 
 async function addToWatchlist(req, res) {
-  const user_id = req.user.id; 
-  const { movie_id, title, genre, poster_url, release_date } = req.body;
+  const user_id = req.user.id;
+  const { movie_id, title, genre_id, poster_url, release_date } = req.body;
 
   if (!user_id || !movie_id) {
     return res.status(400).json({ error: "Missing required fields" });
@@ -13,11 +13,14 @@ async function addToWatchlist(req, res) {
       user_id,
       movie_id,
       title,
-      genre,
+      genre_id,
       poster_url,
       release_date
     );
 
+    if (addedItem.error) {
+      return res.status(400).json({ error: addedItem.error });
+    }
     res.json(addedItem);
 
   } catch (err) {
@@ -65,9 +68,26 @@ async function deleteFromWatchlist(req, res) {
     res.status(500).json({ error: "Database error" });
   }
 }
+async function updateStatus(req, res) {
+  const { id, status } = req.body;  
+  const user_id = req.user.id;
+
+  if (!id || !status) {
+    return res.status(400).json({ error: "Missing id or status" });
+  }
+
+  try {
+    const updated = await watchlistModel.updateStatus(id, user_id, status);
+    res.json(updated);
+  } catch (err) {
+    console.error("Error updating status:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
 
 module.exports = {
   addToWatchlist,
   getWatchlist,
-  deleteFromWatchlist
+  deleteFromWatchlist,
+  updateStatus
 };

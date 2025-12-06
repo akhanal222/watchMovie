@@ -38,6 +38,26 @@ function Watchlist() {
       console.error("Error removing movie from watchlist:", error);
     }
   }
+  async function handleToggleStatus(movie) {
+    const token = localStorage.getItem("token");
+
+    const newStatus = movie.status === "To Watch" ? "Watched" : "To Watch";
+
+    const res = await fetch("http://localhost:3000/api/watchlist/status", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ id: movie.id, status: newStatus }),
+    });
+
+    if (res.ok) {
+      setWatchlist((prev) =>
+        prev.map((m) => (m.id === movie.id ? { ...m, status: newStatus } : m))
+      );
+    }
+  }
 
   return (
     <div className="watchlist-page">
@@ -55,7 +75,7 @@ function Watchlist() {
             <div className="watchlist-info">
               <h3>{movie.title}</h3>
               <p>Release Date: {movie.release_date || "N/A"}</p>
-              <p>Genre: {movie.genre || "N/A"}</p>
+              <p>Genre: {movie.genre || "Unknown"}</p>
               <p>Added On: {movie.added_at?.slice(0, 10) || "Unknown"}</p>
               {/* Remove button */}
               <button
@@ -64,9 +84,13 @@ function Watchlist() {
               >
                 Remove
               </button>
-
-              {/* // Placeholder for watched status */}
-              <p>Watched: {movie.watched ? "Yes" : "No"}</p>
+              <p>Status: {movie.status}</p>
+              <button
+                className="status-btn"
+                onClick={() => handleToggleStatus(movie)}
+              >
+                Mark as {movie.status === "To Watch" ? "Watched" : "To Watch"}
+              </button>
             </div>
           </div>
         ))}

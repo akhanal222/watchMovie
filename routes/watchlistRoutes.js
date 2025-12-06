@@ -14,4 +14,8 @@ router.get("/user", auth, watchlistController.getWatchlist);
 // Example: DELETE /api/watchlist/delete
 router.delete("/delete", auth, watchlistController.deleteFromWatchlist);
 
+// Example: PUT /api/watchlist/status
+// change status of movie to Watched or To Watch
+router.put("/status", auth, watchlistController.updateStatus);
+
 module.exports = router;

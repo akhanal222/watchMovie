@@ -15,24 +15,24 @@ async function searchMovies(req, res) {
     const response = await fetch(url); // built-in fetch
     const data = await response.json();
 
-    const GENRE_MAP = {
-      28: "Action",
-      12: "Adventure",
-      16: "Animation",
-      35: "Comedy",
-      80: "Crime",
-      99: "Documentary",
-      18: "Drama",
-      10751: "Family",
-      14: "Fantasy",
-      27: "Horror",
-      9648: "Mystery",
-      10749: "Romance",
-      878: "Science Fiction",
-      53: "Thriller",
-      10752: "War",
-      37: "Western"
-    };
+    // const GENRE_MAP = {
+    //   28: "Action",
+    //   12: "Adventure",
+    //   16: "Animation",
+    //   35: "Comedy",
+    //   80: "Crime",
+    //   99: "Documentary",
+    //   18: "Drama",
+    //   10751: "Family",
+    //   14: "Fantasy",
+    //   27: "Horror",
+    //   9648: "Mystery",
+    //   10749: "Romance",
+    //   878: "Science Fiction",
+    //   53: "Thriller",
+    //   10752: "War",
+    //   37: "Western"
+    // };
 
     const results = data.results.map(movie => ({
       id: movie.id,
@@ -41,7 +41,8 @@ async function searchMovies(req, res) {
       poster_url: movie.poster_path
         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
         : null,
-      genre: GENRE_MAP[movie.genre_ids?.[0]] || "Unknown"
+      genre_id: movie.genre_ids?.[0] || null,
+      // genre: GENRE_MAP[movie.genre_ids?.[0]] || "Unknown"
     }));
 
     res.json(results);
@@ -61,13 +62,17 @@ async function getMovieDetails(req, res) {
     );
 
     const movie = await response.json();
-
+    const firstGenre = movie.genres && movie.genres.length > 0
+      ? movie.genres[0]
+      : null;
+      
     res.json({
       id: movie.id,
       title: movie.title,
       overview: movie.overview,
       release_date: movie.release_date,
-      genres: movie.genres.map(g => g.name),
+      genre_id: movie.genres[0]?.id || null,
+      genre: firstGenre?.name || "Unknown",
       poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
       vote_average: movie.vote_average,
     });
@@ -77,5 +82,51 @@ async function getMovieDetails(req, res) {
     res.status(500).json({ error: "Failed to fetch movie details" });
   }
 }
+async function getTrendingToday(req, res) {
 
-module.exports = { searchMovies, getMovieDetails };
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_API_KEY}`
+    );
+
+    const data = await response.json();
+
+    // const GENRE_MAP = {
+    //   28: "Action",
+    //   12: "Adventure",
+    //   16: "Animation",
+    //   35: "Comedy",
+    //   80: "Crime",
+    //   99: "Documentary",
+    //   18: "Drama",
+    //   10751: "Family",
+    //   14: "Fantasy",
+    //   27: "Horror",
+    //   9648: "Mystery",
+    //   10749: "Romance",
+    //   878: "Science Fiction",
+    //   53: "Thriller",
+    //   10752: "War",
+    //   37: "Western"
+    // };
+    const results = data.results.map(movie => ({
+      id: movie.id,
+      title: movie.title,
+      release_date: movie.release_date,
+      poster_url: movie.poster_path
+        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+        : null,
+      vote_average: movie.vote_average,
+      genre_id: movie.genre_ids?.[0] || null,
+      // genre: GENRE_MAP[movie.genre_ids?.[0]] || "Unknown" 
+    }));
+
+    res.json(results);
+
+  } catch (err) {
+    console.error("Trending today error:", err);
+    res.status(500).json({ error: "Failed to fetch trending movies" });
+  }
+}
+
+module.exports = { searchMovies, getMovieDetails, getTrendingToday };
