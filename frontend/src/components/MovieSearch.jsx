@@ -11,7 +11,7 @@ function MovieSearch() {
     async function loadTrending() {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/movies/trending/today"
+          "/api/movies/trending/today"
         );
         const data = await res.json();
         setTrendingToday(data);
@@ -30,7 +30,7 @@ function MovieSearch() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/movies/search?query=${query}`
+        `/api/movies/search?query=${query}`
       );
       const data = await res.json();
       setResults(data);

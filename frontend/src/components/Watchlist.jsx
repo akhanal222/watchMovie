@@ -8,7 +8,7 @@ function Watchlist() {
       // const res = await fetch("http://localhost:3000/api/watchlist/user?user_id=1");
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:3000/api/watchlist/user", {
+      const res = await fetch("/api/watchlist/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -23,7 +23,7 @@ function Watchlist() {
   async function handleRemove(id) {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/api/watchlist/delete", {
+      const res = await fetch("/api/watchlist/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function Watchlist() {
 
     const newStatus = movie.status === "To Watch" ? "Watched" : "To Watch";
 
-    const res = await fetch("http://localhost:3000/api/watchlist/status", {
+    const res = await fetch("/api/watchlist/status", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

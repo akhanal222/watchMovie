@@ -3,16 +3,19 @@
 require("dotenv").config();
 const express = require("express");
 // const multer = require("multer");
+const path = require("path");
 const cors = require("cors");
 
 const app = express();
 
 // GLOBAL CORS CONFIG
+if (process.env.NODE_ENV !== "production") {
 app.use(cors({
   origin: "http://localhost:5173",
   methods: "GET,POST,PUT,DELETE",
   credentials: true
 }));
+}
 
 // Middleware
 // app.use(multer().none());
@@ -36,9 +39,14 @@ const authRoutes = require("./routes/authRoutes");
 app.use("/auth", authRoutes);
 
 
+const frontendPath = path.join(__dirname, "frontend/dist");
 
-// Serve frontend files (optional for now)
-app.use(express.static("frontend"));
+app.use(express.static(frontendPath));
+
+app.get('/{*splat}', function (req, res) {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

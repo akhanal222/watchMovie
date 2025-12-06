@@ -10,7 +10,7 @@ function AddToWatchlistButton({ movie }) {
     setdisable(true); // disable the button after press
     setLabel("Adding...");
     try {
-      const res = await fetch("http://localhost:3000/api/watchlist/add", {
+      const res = await fetch("/watchlist/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
