@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddToWatchlistButton from "./AddToWatchlistButton";
+
 function MovieDetail() {
   const { id } = useParams(); // get movie ID from URL
   const [movie, setMovie] = useState(null);
+  const [trailer, setTrailer] = useState(null);
 
   useEffect(() => {
     async function fetchMovie() {
@@ -12,6 +14,25 @@ function MovieDetail() {
       setMovie(data);
     }
     fetchMovie();
+  }, [id]);
+
+  useEffect(() => {
+    async function loadTrailer() {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/movies/${id}/videos`
+        );
+        const data = await res.json();
+
+        if (data.length > 0) {
+          setTrailer(data[0]); // first trailer
+        }
+      } catch (err) {
+        console.error("Trailer fetch error:", err);
+      }
+    }
+
+    loadTrailer();
   }, [id]);
 
   if (!movie) return <h2>Loading...</h2>;
@@ -30,18 +51,32 @@ function MovieDetail() {
         />
 
         <div className="movie-detail-info">
-          <h1>{movie.title}</h1>
-          <AddToWatchlistButton
+          <h1 className="movie-title">{movie.title}</h1>
+          {trailer && (
+            <div className="trailer-section">
+              <div className="trailer-wrapper">
+                <iframe
+                  src={`https://www.youtube.com/embed/${trailer.key}`}
+                  title="Movie Trailer"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          )}
+          <div className="movie-detail-watchlist-wrapper">
+          <AddToWatchlistButton  
             movie={{
               id: movie.id,
               title: movie.title,
               poster_url: movie.poster_url,
               release_date: movie.release_date,
-            //   genre: movie.genre,
+              //   genre: movie.genre,
               genre_id: movie.genre_id, // genre ID from TMDB
             }}
           />
-
+          </div>
+          
           <button className="back-button" onClick={backToHome}>
             Back to Home
           </button>
