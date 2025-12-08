@@ -6,8 +6,30 @@ function Register() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  function validateInputs() {
+    if (!username.trim()) {
+      return "Username cannot be empty.";
+    }
+    if (!email.includes("@")) {
+      return "Email must include @.";
+    }
+    if (!email.trim()) {
+      return "Email cannot be empty.";
+    }
+    if (!password.trim()) {
+      return "Password cannot be empty.";
+    }
+    return null; 
+  }
+
   async function handleRegister(e) {
     e.preventDefault();
+
+    const error = validateInputs();
+    if (error) {
+      setError(error);
+      return;
+    }
 
     try {
       const res = await fetch("/auth/register", {

@@ -5,8 +5,26 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+   function validateInputs() {
+    if (!email.trim()) {
+      return "Email cannot be empty.";
+    }
+    if (!email.includes("@")) {
+      return "Email must include @.";
+    }
+    if (!password.trim()) {
+      return "Password cannot be empty.";
+    }
+    return null;
+  }
   async function handleLogin(e) {
     e.preventDefault();
+
+    const error = validateInputs();
+    if (error) {
+      setError(error);
+      return;
+    }
 
     try {
       const res = await fetch("/auth/login", {
