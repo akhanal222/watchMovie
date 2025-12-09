@@ -1,10 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieCard from "./MovieCard";
 
 function MovieSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [trendingToday, setTrendingToday] = useState([]);
+
+  useEffect(() => {
+    async function loadTrending() {
+      try {
+        const res = await fetch(
+          "/api/movies/trending/today"
+        );
+        const data = await res.json();
+        setTrendingToday(data);
+      } catch (err) {
+        console.error("Trending fetch error:", err);
+      }
+    }
+
+    loadTrending();
+  }, []);
 
   async function handleSearch() {
     if (!query.trim()) return;
@@ -13,7 +30,7 @@ function MovieSearch() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/movies/search?query=${query}`
+        `/api/movies/search?query=${query}`
       );
       const data = await res.json();
       setResults(data);
@@ -55,9 +72,19 @@ function MovieSearch() {
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </div>
+
+      {trendingToday.length > 0 && (
+        <div className="trending-section">
+          <h2>Trending Today</h2>
+          <div className="movie-grid">
+            {trendingToday.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default MovieSearch;
-

@@ -108,7 +108,7 @@
 }
 
 
-/* Navbar css  */
+/*================================================= Navbar css ================================================= */
 
 .navbar {
   display: flex;
@@ -145,7 +145,7 @@
 }
 
 
-/* Watchlist Page CSS */
+/*================================================= Watchlist Page CSS ================================================= */
 
 .watchlist-page {
   padding: 20px 40px;
@@ -168,8 +168,8 @@
 }
 
 .watchlist-img {
-  width: 100px;
-  height: 150px;
+  width: 200px;
+  height: 250px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -183,5 +183,219 @@
   margin: 5px 0 0;
   font-size: 14px;
   color: #cccccc;
+}
+.remove-btn {
+  align-items: right ;
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ff4d4d;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.watchlist-title {
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* Container for the whole auth card */
+.auth-container {
+  width: 380px;
+  margin: 80px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Smooth fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ================================================= login page and registration page css =================================================  */
+/* Title */
+.auth-container h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Form styling */
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Input fields */
+.auth-container input {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+  transition: 0.2s;
+}
+
+.auth-container input:focus {
+  border-color: #4bb0ff;
+  box-shadow: 0 0 4px rgba(75,176,255,0.5);
+}
+
+/* Submit button */
+.auth-container button {
+  padding: 12px;
+  font-size: 18px;
+  background: #4bb0ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.auth-container button:hover {
+  background: #2d9fe6;
+}
+
+/* Error message */
+.error {
+  color: red;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+/* Responsive layout for mobile */
+@media (max-width: 450px) {
+  .auth-container {
+    width: 90%;
+    padding: 20px;
+  }
+}
+
+/* =================================================  Movie detalil page css ================================================= */
+
+.movie-detail-page {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.movie-detail-container {
+  display: flex;
+  gap: 2rem;
+  max-width: 900px;
+}
+
+.movie-detail-poster {
+  width: 380px;          
+  height: 570px;         
+  object-fit: cover;      
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  margin-top: 60px; 
+}
+
+.movie-detail-info {
+  max-width: 600px;
+}
+
+.overview {
+  margin-top: 1rem;
+  line-height: 1.4;
+}
+
+.movie-detail-watchlist-wrapper button {
+  margin-top: 20px;
+  padding: 10px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.movie-detail-watchlist-wrapper button:hover {
+  background-color: #218838;
+  transform: scale(1.03);
+  transition: 0.2s;
+}
+/* .movie-detail-watchlist-wrapper::hover {
+  transform: scale(1.03);
+  transition: 0.2s;
+} */
+
+.movie-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.back-button {
+  margin-top: 20px;
+  padding: 10px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background-color:red;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.back-button:hover {
+  background-color: #cc0000;
+  transform: scale(1.03);
+  transition: 0.2s;
+}
+
+.trailer-section {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.trailer-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 700px;   /* controls max trailer width */
+  margin: 0 auto;     /* centers the trailer */
+  padding-bottom: 56.25%; /* 16:9 ratio */
+  height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.trailer-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+
+.watchlist-title-clickable {
+  cursor: pointer;
+}
+.watchlist-title-clickable:hover {
+  opacity: 0.8;
+  transition: 0.2s ease-in-out;
+  color: #00baff;
 }
 
