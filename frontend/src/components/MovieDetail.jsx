@@ -35,8 +35,7 @@ function MovieDetail() {
   if (!movie) return <h2 style={{ color: "#fff" }}>Loading...</h2>;
 
   function backToHome() {
-    window.dispatchEvent(new Event("watchly:home"));
-    navigate("/");
+    navigate(-1);
   }
 
   const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
