@@ -5,11 +5,13 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import MovieDetail from "./components/MovieDetail";
 import { Routes, Route } from "react-router-dom";
+import { ToastProvider } from "./components/Toast";
 import "./App.css";
 
 function App() {
   return (
-      <div>
+      <div className="app-shell">
+        <ToastProvider>
         <Navbar />
         <Routes>
           <Route path="/" element={<MovieSearch />} />
@@ -18,6 +20,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/movie/:id" element={<MovieDetail />} />
         </Routes>
+        </ToastProvider>
       </div>
   );
 }

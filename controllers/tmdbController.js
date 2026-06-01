@@ -89,6 +89,109 @@ async function getTrendingToday(req, res) {
     res.status(500).json({ error: "Failed to fetch trending movies" });
   }
 }
+async function getPopularMovies(req, res) {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_API_KEY}`
+    );
+    const data = await response.json();
+    const results = (data.results || []).map(item => ({
+      id: item.id,
+      title: item.title,
+      release_date: item.release_date,
+      poster_url: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+      vote_average: item.vote_average,
+      genre_id: item.genre_ids?.[0] || null,
+    }));
+    res.json(results);
+  } catch (err) {
+    console.error('Popular movies error:', err);
+    res.status(500).json({ error: 'Failed to fetch popular movies' });
+  }
+}
+
+async function getPopularTV(req, res) {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.TMDB_API_KEY}`
+    );
+    const data = await response.json();
+    const results = (data.results || []).map(item => ({
+      id: item.id,
+      title: item.name,
+      release_date: item.first_air_date || null,
+      poster_url: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+      vote_average: item.vote_average,
+      genre_id: item.genre_ids?.[0] || null,
+    }));
+    res.json(results);
+  } catch (err) {
+    console.error('Popular TV error:', err);
+    res.status(500).json({ error: 'Failed to fetch popular TV' });
+  }
+}
+
+async function getTrendingTV(req, res) {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.TMDB_API_KEY}`
+    );
+    const data = await response.json();
+    const results = (data.results || []).map(item => ({
+      id: item.id,
+      title: item.name,
+      release_date: item.first_air_date || null,
+      poster_url: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+      vote_average: item.vote_average,
+      genre_id: item.genre_ids?.[0] || null,
+    }));
+    res.json(results);
+  } catch (err) {
+    console.error('Trending TV error:', err);
+    res.status(500).json({ error: 'Failed to fetch trending TV' });
+  }
+}
+async function multiSearch(req, res) {
+  const query = req.query.query;
+  if (!query) return res.status(400).json({ error: "Query missing" });
+
+  try {
+    const url = `https://api.themoviedb.org/3/search/multi?api_key=${process.env.TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const results = (data.results || [])
+      .filter(item => item.media_type === "movie" || item.media_type === "tv") // drop persons
+      .map(item => {
+        if (item.media_type === "movie") {
+          return {
+            id: item.id,
+            media_type: "movie",
+            title: item.title,
+            release_date: item.release_date || null,
+            poster_url: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+            vote_average: item.vote_average ?? null,
+            genre_id: item.genre_ids?.[0] || null,
+          };
+        }
+        // tv
+        return {
+          id: item.id,
+          media_type: "tv",
+          title: item.name,
+          release_date: item.first_air_date || null,
+          poster_url: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+          vote_average: item.vote_average ?? null,
+          genre_id: item.genre_ids?.[0] || null,
+        };
+      });
+
+    res.json(results);
+  } catch (err) {
+    console.error("TMDB multi-search error:", err);
+    res.status(500).json({ error: "Failed to perform multi-search" });
+  }
+}
 async function getMovieVideos(req, res) {
   const { id } = req.params;
 
@@ -126,4 +229,13 @@ async function getMovieVideos(req, res) {
 
 
 
-module.exports = { searchMovies, getMovieDetails, getTrendingToday, getMovieVideos };
+module.exports = { 
+  searchMovies, 
+  getMovieDetails, 
+  getTrendingToday, 
+  getMovieVideos,
+  getPopularMovies,
+  getPopularTV,
+  getTrendingTV,
+  multiSearch
+};

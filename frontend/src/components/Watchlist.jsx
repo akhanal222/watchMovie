@@ -66,6 +66,7 @@ function Watchlist() {
 
   return (
     <div className="watchlist-page">
+      <div className="container">
       <h1 className="watchlist-title">Watchlist</h1>
 
       <div className="watchlist-list">
@@ -105,6 +106,7 @@ function Watchlist() {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

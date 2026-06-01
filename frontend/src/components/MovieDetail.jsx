@@ -1,13 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddToWatchlistButton from "./AddToWatchlistButton";
-
 
 function MovieDetail() {
   const { id } = useParams(); // get movie ID from URL
   const [movie, setMovie] = useState(null);
   const [trailer, setTrailer] = useState(null);
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchMovie() {
@@ -21,82 +20,104 @@ function MovieDetail() {
   useEffect(() => {
     async function loadTrailer() {
       try {
-        const res = await fetch(
-          `http://localhost:3000/api/movies/${id}/videos`
-        );
+        const res = await fetch(`http://localhost:3000/api/movies/${id}/videos`);
         const data = await res.json();
-
-        if (data.length > 0) {
-          setTrailer(data[0]); // first trailer
-        }
+        if (data.length > 0) setTrailer(data[0]); // first trailer
       } catch (err) {
         console.error("Trailer fetch error:", err);
       }
     }
-
     loadTrailer();
   }, [id]);
 
-  if (!movie) return <h2>Loading...</h2>;
+  if (!movie) return <h2 style={{ color: "#fff" }}>Loading...</h2>;
 
-  async function backToHome() {
-    window.location.href = "/";
+  function backToHome() {
+    window.dispatchEvent(new Event("watchly:home"));
+    navigate("/");
   }
-  
+
+  const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
+  const genres = movie.genres && Array.isArray(movie.genres) ? movie.genres : (movie.genre ? [movie.genre] : []);
 
   return (
     <div className="movie-detail-page">
-      <div className="movie-detail-container">
-        <img
-          className="movie-detail-poster"
-          src={movie.poster_url}
-          alt={movie.title}
-        />
+      <div className="md-container">
+        <div className="movie-detail-grid">
 
-        <div className="movie-detail-info">
-          <h1 className="movie-title">{movie.title}</h1>
-          {trailer && (
-            <div className="trailer-section">
-              <div className="trailer-wrapper">
-                <iframe
-                  src={`https://www.youtube.com/embed/${trailer.key}`}
-                  title="Movie Trailer"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+          <div className="poster-wrap">
+            <img
+              className="movie-detail-poster"
+              src={movie.poster_url}
+              alt={movie.title}
+            />
+          </div>
+
+          <div className="movie-detail-info">
+            <div className="meta-row">
+              <div>
+                <h1 className="movie-title-detail">
+                  {movie.title}
+                  {releaseYear && <span className="release-year"> ({releaseYear})</span>}
+                </h1>
+
+                <div className="genre-row">
+                  {genres.map((g, idx) => (
+                    <span key={idx} className="genre-pill">{g}</span>
+                  ))}
+                </div>
               </div>
             </div>
-          )}
-          <div className="movie-detail-watchlist-wrapper">
-          <AddToWatchlistButton  
-            movie={{
-              id: movie.id,
-              title: movie.title,
-              poster_url: movie.poster_url,
-              release_date: movie.release_date,
-              //   genre: movie.genre,
-              genre_id: movie.genre_id, // genre ID from TMDB
-            }}
-          />
+
+            <p className="overview">{movie.overview}</p>
+
+            <div className="actions">
+              <AddToWatchlistButton movie={{
+                id: movie.id,
+                title: movie.title,
+                poster_url: movie.poster_url,
+                release_date: movie.release_date,
+                genre_id: movie.genre_id
+              }} />
+
+              <button className="btn-outline" onClick={backToHome}>
+                ← Back
+              </button>
+            </div>
+
+            <div className="details-card">
+              <div className="detail-item">
+                <div className="detail-label">Release</div>
+                <div className="detail-value">{movie.release_date || "—"}</div>
+              </div>
+
+              <div className="detail-item">
+                <div className="detail-label">Rating⭐</div>
+                <div className="detail-value"> {movie.vote_average ?? "—"} </div>
+              </div> 
+
+              <div className="detail-item">
+                <div className="detail-label">Genre</div>
+                <div className="detail-value">{genres.join(", ") || "—"}</div>
+              </div>
+            </div>
+
+            {trailer && (
+              <div className="trailer-section">
+                <h3 style={{ margin: 0, marginBottom: 10, color: "#fff" }}>Trailer</h3>
+                <div className="iframe-wrap">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${trailer.key}`}
+                    title="Movie Trailer"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            )}
+
           </div>
-          
-          <button className="back-button" onClick={backToHome}>
-            Back to Home
-          </button>
-          <p>
-            <strong>Release:</strong> {movie.release_date}
-          </p>
 
-          <p>
-            {/* <strong>Genres:</strong> {movie.genres?.join(", ")} */}
-            <strong>Genre:</strong> {movie.genre}
-          </p>
-
-          <p className="overview">{movie.overview}</p>
-
-          <p>
-            <strong>Rating:</strong> {movie.vote_average}
-          </p>
         </div>
       </div>
     </div>

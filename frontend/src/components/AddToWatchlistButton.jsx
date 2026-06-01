@@ -1,49 +1,66 @@
-import React from "react";
 import { useState } from "react";
+import { useToast } from "./Toast";
 
 function AddToWatchlistButton({ movie }) {
-  const [disable, setdisable] = useState(false); // this handel the button press
+  const [disable, setDisable] = useState(false);
   const [label, setLabel] = useState("Add to Watchlist");
+  const { pushToast } = useToast();
 
   async function handleAdd() {
     const token = localStorage.getItem("token");
-    setdisable(true); // disable the button after press
+    setDisable(true);
     setLabel("Adding...");
+
     try {
       const res = await fetch("http://localhost:3000/api/watchlist/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Send token
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           movie_id: movie.id,
           title: movie.title,
-          genre_id: movie.genre_id, 
-          // genre: movie.genre,
+          genre_id: movie.genre_id,
           poster_url: movie.poster_url,
           release_date: movie.release_date,
         }),
       });
-      
-      const data = await res.json();
-      
-      if (data.error === "Movie already in watchlist") {
-        setLabel("Already Added");
-        return;
-      }
-      if (!res.ok) {
-        setdisable(false);
-        setLabel("Add to Watchlist");
-        alert("Failed to add to watchlist.");
-        return;
-      }
-      setLabel("Added");
 
+      const data = await res.json();
+
+      if (data?.error === "Movie already in watchlist") {
+        setLabel("Already Added");
+        pushToast({
+          title: "Already in watchlist",
+          message: movie.title,
+        });
+        return;
+      }
+
+      if (!res.ok) {
+        setDisable(false);
+        setLabel("Add to Watchlist");
+        pushToast({
+          title: "Couldn’t add to watchlist",
+          message: data?.error || "Please try again.",
+        });
+        return;
+      }
+
+      setLabel("Added");
+      pushToast({
+        title: "Added to watchlist",
+        message: movie.title,
+      });
     } catch (err) {
       console.error("Add Watchlist Error:", err);
-      setdisable(false); // if there is error let user again press the add button
+      setDisable(false);
       setLabel("Add to Watchlist");
+      pushToast({
+        title: "Something went wrong",
+        message: "Please try again.",
+      });
     }
   }
 

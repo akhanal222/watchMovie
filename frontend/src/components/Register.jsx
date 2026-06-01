@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useToast } from "./Toast";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { pushToast } = useToast();
 
   function validateInputs() {
     if (!username.trim()) {
@@ -44,8 +46,10 @@ function Register() {
         setError(data.error || "Registration failed");
         return;
       }
-
-      alert("Account created! Please log in.");
+      pushToast({
+        title: "Registration successful",
+        message: "You can now log in.",
+      });
       window.location.href = "/login";
     } catch (err) {
       setError("Something went wrong.");
@@ -54,7 +58,9 @@ function Register() {
 
   return (
     <div className="auth-container">
+      
       <h2>Create Account</h2>
+      <p className="login-subtitle">Start building your personal watchlist today</p>
 
       {error && <p className="error">{error}</p>}
 

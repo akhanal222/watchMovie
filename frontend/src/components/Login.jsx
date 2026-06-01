@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useToast } from "./Toast";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -52,7 +53,8 @@ function Login() {
 
   return (
     <div className="auth-container">
-      <h2>Login</h2>
+          <h1 class="login-title">Welcome Back</h1>
+        <p class="login-subtitle">Sign in to manage your watchlist</p>  
 
       {error && <p className="error">{error}</p>}
 
