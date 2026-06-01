@@ -98,7 +98,7 @@ function MovieSearch() {
     const t = window.setTimeout(async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/movies/search?query=${encodeURIComponent(q)}`
+          `/api/movies/search?query=${encodeURIComponent(q)}`
         );
         const data = await res.json();
         const arr = Array.isArray(data) ? data : [];

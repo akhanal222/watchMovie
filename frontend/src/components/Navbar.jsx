@@ -17,7 +17,7 @@ function Navbar() {
       }
 
       try {
-        const res = await fetch("http://localhost:3000/api/watchlist/user", {
+        const res = await fetch("/api/watchlist/user", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
