@@ -73,7 +73,7 @@ function MovieSearch() {
     async function loadTrending() {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/movies/trending/today"
+          "/api/movies/trending/today"
         );
         const data = await res.json();
         const arr = Array.isArray(data) ? data : [];
@@ -119,9 +119,8 @@ function MovieSearch() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/movies/search?query=${encodeURIComponent(
-          query
-        )}`
+
+        `/api/movies/search?query=${query}`
       );
       const data = await res.json();
       setResults(Array.isArray(data) ? data : []);

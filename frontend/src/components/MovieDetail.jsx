@@ -10,7 +10,7 @@ function MovieDetail() {
 
   useEffect(() => {
     async function fetchMovie() {
-      const res = await fetch(`http://localhost:3000/api/movies/${id}`);
+      const res = await fetch(`/api/movies/${id}`);
       const data = await res.json();
       setMovie(data);
     }
@@ -20,7 +20,9 @@ function MovieDetail() {
   useEffect(() => {
     async function loadTrailer() {
       try {
-        const res = await fetch(`http://localhost:3000/api/movies/${id}/videos`);
+        const res = await fetch(
+          `/api/movies/${id}/videos`
+        );
         const data = await res.json();
         if (data.length > 0) setTrailer(data[0]); // first trailer
       } catch (err) {

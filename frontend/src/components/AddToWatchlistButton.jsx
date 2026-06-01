@@ -12,7 +12,7 @@ function AddToWatchlistButton({ movie }) {
     setLabel("Adding...");
 
     try {
-      const res = await fetch("http://localhost:3000/api/watchlist/add", {
+      const res = await fetch("/api/watchlist/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
