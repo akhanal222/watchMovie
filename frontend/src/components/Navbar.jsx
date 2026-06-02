@@ -40,7 +40,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="container navbar-inner">
-        <Link to="/" className="brand" aria-label="Watchly Home" onClick={() => window.dispatchEvent(new Event('watchly:home'))}> <img src={logo} alt="Watchly" /> </Link>
+        <Link to="/" className="brand" aria-label="Watchly Home" onClick={() => window.dispatchEvent(new Event('watchly:home'))}> <img className="logo" src={logo} alt="Watchly" /> </Link>
 
         <ul className="nav-links">
           <li>

@@ -25,7 +25,36 @@
 /* =========================
    Navbar (sticky + glass)
    ========================= */
+  
+.logo {
+  height: 50px;
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
 
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.logo:active {
+  animation: playPop 0.4s ease;
+}
+
+@keyframes playPop {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.85);
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .navbar {
   position: sticky;
   top: 0;
@@ -57,7 +86,7 @@
 }
 
 .brand img {
-  height: 44px;
+  height: 110px;
   width: auto;
   display: block;
 }
@@ -116,7 +145,9 @@
   font-size: 12px;
   font-weight: 700;
   color: #0b1220;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
+  background: linear-gradient(135deg, #1E293B, #525d6c);
+
+
 }
 
 /* =========================
@@ -200,24 +231,69 @@
 .btn-gradient {
   height: 48px;
   padding: 0 18px;
-  border: 0;
+  /* border: 0; */
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
+  background: linear-gradient(135deg, #1E293B, #525d6c);
+  border: 1px solid rgba(255,255,255,0.1);
   color: #fff;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 160ms ease, filter 160ms ease;
+  position: relative;
+  overflow: hidden;
+
+  transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+  animation: glow 2.5s ease-in-out infinite;
 }
 
 .btn-gradient:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+}
+
+.btn-gradient:active {
+  transform: scale(0.96);
 }
 
 .btn-gradient:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  animation: none;
+}
+
+/* Moving light sweep */
+.btn-gradient::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.35),
+    transparent
+  );
+}
+
+.btn-gradient:hover::before {
+  animation: shine 0.8s ease;
+}
+
+@keyframes shine {
+  from { left: -150%; }
+  to { left: 200%; }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(124, 58, 237, 0);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(124, 58, 237, 0.4);
+  }
 }
 
 /* =========================
@@ -466,8 +542,10 @@
 .auth-container button {
   height: 44px;
   border-radius: 12px;
-  border: 0;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
+  /* border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, #1E293B, #525d6c); */
+  background: linear-gradient(135deg, #1E293B, #525d6c);
+  border: 1px solid rgba(255,255,255,0.1);
   color: #fff;
   font-weight: 800;
   cursor: pointer;
@@ -643,7 +721,7 @@
   height: 10px;
   margin-top: 5px;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
+  background: linear-gradient(135deg, #1E293B, #525d6c);
 }
 
 .toast-title {
